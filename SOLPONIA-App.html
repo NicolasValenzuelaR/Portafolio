@@ -35,7 +35,7 @@ button,input{ font:inherit; }
 .mark{ width:34px; height:34px; border-radius:9px; background:rgba(255,255,255,.2); display:flex; align-items:center; justify-content:center; font-size:18px; }
 .brand b{ display:block; font-size:16px; letter-spacing:.4px; line-height:1.1; }
 .brand small{ font-size:11px; opacity:.85; }
-.icon-btn{ width:38px; height:38px; border-radius:50%; border:0; background:rgba(255,255,255,.2); color:#fff; font-size:20px; }
+.icon-btn{ width:38px; height:38px; border-radius:50%; border:0; background:rgba(255,255,255,.2); color:#fff; font-size:20px; cursor:pointer; }
 .icon-btn:active{ background:rgba(255,255,255,.35); }
 .icon-btn.spin{ animation:spin .7s linear; }
 @keyframes spin{ to{ transform:rotate(360deg); } }
@@ -98,11 +98,11 @@ main{ padding:14px 14px calc(88px + env(safe-area-inset-bottom)); }
 
 /* equipos */
 .seg{ display:grid; grid-template-columns:repeat(3,1fr); background:var(--soft); border-radius:12px; padding:3px; margin-bottom:10px; }
-.seg button{ border:0; background:none; padding:9px 4px; border-radius:10px; color:var(--tx2); font-weight:600; font-size:13px; }
+.seg button{ border:0; background:none; padding:9px 4px; border-radius:10px; color:var(--tx2); font-weight:600; font-size:13px; cursor:pointer; }
 .seg button.on{ background:#fff; color:var(--g700); box-shadow:0 1px 3px rgba(20,83,45,.18); }
 .search{ width:100%; padding:11px 14px; border:1px solid var(--bd); border-radius:12px; background:#fff; color:var(--tx); margin-bottom:10px; }
 .chips{ display:flex; gap:6px; overflow-x:auto; padding-bottom:8px; margin-bottom:2px; }
-.chips button{ flex:none; border:1px solid var(--bd); background:#fff; color:var(--tx2); border-radius:20px; padding:6px 12px; font-size:12.5px; }
+.chips button{ flex:none; border:1px solid var(--bd); background:#fff; color:var(--tx2); border-radius:20px; padding:6px 12px; font-size:12.5px; cursor:pointer; }
 .chips button.on{ background:var(--g700); border-color:var(--g700); color:#fff; }
 .eq{ background:var(--card); border:1px solid var(--bd); border-radius:14px; padding:12px 14px; margin-bottom:10px; }
 .eq-top{ display:flex; justify-content:space-between; align-items:center; }
@@ -122,18 +122,17 @@ main{ padding:14px 14px calc(88px + env(safe-area-inset-bottom)); }
 label.l{ display:block; font-size:12px; font-weight:600; color:var(--tx2); margin:10px 0 4px; }
 .card input[type=url]{ width:100%; padding:11px 12px; border:1px solid var(--bd); border-radius:10px; background:#f6fbf7; color:var(--tx); }
 .row{ display:flex; gap:8px; margin-top:10px; }
-.btn{ flex:1; border:0; border-radius:10px; padding:11px; background:var(--g700); color:#fff; font-weight:700; }
+.btn{ flex:1; border:0; border-radius:10px; padding:11px; background:var(--g700); color:#fff; font-weight:700; cursor:pointer; }
 .btn.ghost{ background:#fff; color:var(--g700); border:1px solid var(--g700); }
-.file{ display:block; margin-top:10px; padding:11px; border:1px dashed var(--g600); border-radius:10px; color:var(--g700); text-align:center; font-weight:600; font-size:13px; }
+.file{ display:block; margin-top:10px; padding:11px; border:1px dashed var(--g600); border-radius:10px; color:var(--g700); text-align:center; font-weight:600; font-size:13px; cursor:pointer; }
 .file input{ display:none; }
-.switch{ display:flex; gap:10px; align-items:center; font-size:14px; }
+.switch{ display:flex; gap:10px; align-items:center; font-size:14px; cursor:pointer; }
 .switch input{ width:20px; height:20px; accent-color:var(--g700); }
-.lock{ background:var(--ok-bg); color:var(--g800); border-radius:10px; padding:10px 12px; font-size:13px; }
 
 /* navegación inferior */
 .tabs{ position:fixed; left:0; right:0; bottom:0; max-width:600px; margin:0 auto; z-index:10; display:grid; grid-template-columns:repeat(6,1fr);
   background:#fff; border-top:1px solid var(--bd); padding-bottom:env(safe-area-inset-bottom); }
-.tabs button{ position:relative; border:0; background:none; padding:8px 0 7px; font-size:10px; color:var(--tx3); display:flex; flex-direction:column; align-items:center; gap:1px; }
+.tabs button{ position:relative; border:0; background:none; padding:8px 0 7px; font-size:10px; color:var(--tx3); display:flex; flex-direction:column; align-items:center; gap:1px; cursor:pointer; }
 .tabs .ic{ font-size:18px; }
 .tabs button.on{ color:var(--g700); font-weight:700; }
 .badge{ position:absolute; top:3px; left:calc(50% + 10px); background:var(--crit); color:#fff; border-radius:10px; font-size:10px; font-weight:700; padding:0 5px; min-width:16px; }
@@ -145,7 +144,7 @@ label.l{ display:block; font-size:12px; font-weight:600; color:var(--tx2); margi
 <div class="app">
   <header class="hd">
     <div class="hd-row">
-      <div class="brand"><span class="mark">☀️</span><div><b>SOLPONIA</b><small>Desierto Sustentable</small></div></div>
+      <div class="brand"><span class="mark">☀️</span><div><b>SOLPONIA v2.1</b><small>Desierto Sustentable</small></div></div>
       <button class="icon-btn" id="btnRefresh" aria-label="Actualizar datos">↻</button>
     </div>
     <div class="hd-row sub"><span class="conn wait" id="conn"><i></i><span>Conectando…</span></span><span id="clock" class="num"></span></div>
@@ -196,12 +195,13 @@ label.l{ display:block; font-size:12px; font-weight:600; color:var(--tx2); margi
 
     <section class="view" id="v-ajustes">
       <div class="card">
-      </div>
-      <div class="card">
         <h3>Origen de los datos</h3>
         <label class="l" for="url">URL de datos (JSON)</label>
-        <input id="url" type="url" inputmode="url" placeholder="http://192.168.1.50/data  o  https://…/solponia-data.json">
-        <div class="row"><button class="btn" id="btnSave">Conectar</button><button class="btn ghost" id="btnDemo">Usar demo</button></div>
+        <input id="url" type="url" inputmode="url" placeholder="http://192.168.1.50/data o https://…/solponia-data.json">
+        <div class="row">
+          <button class="btn" id="btnSave">Conectar</button>
+          <button class="btn ghost" id="btnDemo">Usar demo</button>
+        </div>
         <label class="file">Cargar archivo solponia-data.json<input id="file" type="file" accept="application/json,.json"></label>
         <p class="muted" id="srcInfo"></p>
       </div>
@@ -210,8 +210,8 @@ label.l{ display:block; font-size:12px; font-weight:600; color:var(--tx2); margi
         <label class="switch"><input type="checkbox" id="notif"> Avisar alertas críticas nuevas (con la app abierta)</label>
       </div>
       <div class="card">
-        <h3>Instalar en el celular</h3>
-        /*Android (Chrome): menú ⋮ → “Instalar app”.iPhone (Safari): Compartir → “Agregar a inicio”.Debe abrirse desde https o localhost para instalarse.*/
+        <h3>Actualización de App</h3>
+        <button class="btn ghost" id="btnForceUpdate" style="width:100%;">Forzar recarga sin caché</button>
       </div>
     </section>
   </main>
@@ -220,7 +220,7 @@ label.l{ display:block; font-size:12px; font-weight:600; color:var(--tx2); margi
     <button data-v="resumen" class="on"><span class="ic">🌱</span>Resumen</button>
     <button data-v="sensores"><span class="ic">📈</span>Sensores</button>
     <button data-v="equipos"><span class="ic">🏬</span>Equipos</button>
-    <button data-v="contabilidad"><span class="ic">💰</span>contabilidad</button>
+    <button data-v="contabilidad"><span class="ic">💰</span>Contabilidad</button>
     <button data-v="alertas"><span class="ic">🔔</span>Alertas<span class="badge" id="badge" hidden></span></button>
     <button data-v="ajustes"><span class="ic">⚙️</span>Ajustes</button>
   </nav>
@@ -230,19 +230,20 @@ label.l{ display:block; font-size:12px; font-weight:600; color:var(--tx2); margi
 (() => {
 'use strict';
 const $ = s => document.querySelector(s);
+const $$ = s => document.querySelectorAll(s);
 const esc = v => String(v ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const clamp = (v,a,b) => Math.min(b, Math.max(a, v));
 const fmtCLP = n => '$' + Math.round(n||0).toLocaleString('es-CL');
 
 const SENS = [
-  {k:'ph',      n:'pH solución',        u:'',      d:2, ic:'🧪'},
-  {k:'ec',      n:'Conductividad (EC)', u:'mS/cm', d:2, ic:'⚡'},
-  {k:'temp',    n:'Temp. solución',     u:'°C',    d:1, ic:'🌡️'},
-  {k:'nivel',   n:'Nivel de tanque',    u:'%',     d:0, ic:'💧'},
-  {k:'humedad', n:'Humedad ambiente',   u:'%',     d:0, ic:'☁️'},
-  {k:'tempAmb', n:'Temp. invernadero',  u:'°C',    d:1, ic:'🌤️'},
-  {k:'solar',   n:'Generación solar',   u:'kW',    d:2, ic:'☀️'},
-  {k:'bateria', n:'Batería',            u:'%',     d:0, ic:'🔋'},
+  {k:'ph',       n:'pH solución',        u:'',      d:2, ic:'🧪'},
+  {k:'ec',       n:'Conductividad (EC)', u:'mS/cm', d:2, ic:'⚡'},
+  {k:'temp',     n:'Temp. solución',     u:'°C',    d:1, ic:'🌡️'},
+  {k:'nivel',    n:'Nivel de tanque',    u:'%',     d:0, ic:'💧'},
+  {k:'humedad',  n:'Humedad ambiente',   u:'%',     d:0, ic:'☁️'},
+  {k:'tempAmb',  n:'Temp. invernadero',  u:'°C',    d:1, ic:'🌤️'},
+  {k:'solar',    n:'Generación solar',   u:'kW',    d:2, ic:'☀️'},
+  {k:'bateria',  n:'Batería',            u:'%',     d:0, ic:'🔋'},
 ];
 const DEF_UMB = {
   ph:{min:5.5,max:6.8,on:true}, ec:{min:1.2,max:2.5,on:true}, temp:{min:16,max:26,on:true},
@@ -320,7 +321,6 @@ function simStep(st){
   if (v.nivel < 20) v.nivel = 95;
 }
 
-/* ---------- carga de datos ---------- */
 function apply(j, fuente){
   const src = j.sensores || j;
   let any = false;
@@ -337,6 +337,7 @@ function apply(j, fuente){
 let busy = false;
 async function sync(manual){
   if (busy) return; busy = true;
+  if (manual) $('#btnRefresh').classList.add('spin');
   const url = lsGet(LS.url);
   try {
     if (!url){
@@ -354,18 +355,30 @@ async function sync(manual){
     if (S.fuente === 'vivo' || S.fuente === 'wait') S.fuente = 'offline';
   }
   busy = false;
+  setTimeout(() => $('#btnRefresh').classList.remove('spin'), 700);
   render();
 }
+
 function boot(){
   const url = lsGet(LS.url);
-  if (!url){ S = demoData(); return; }
-  try {
-    const c = JSON.parse(lsGet(LS.cache) || 'null');
-    if (c && c.sensores){ S = Object.assign(blank(), c); S.fuente = 'offline'; }
-  } catch(e) { S = blank(); }
+  if (!url){ S = demoData(); }
+  else {
+    try {
+      const c = JSON.parse(lsGet(LS.cache) || 'null');
+      if (c && c.sensores){ S = Object.assign(blank(), c); S.fuente = 'offline'; }
+      else { S = blank(); }
+    } catch(e) { S = blank(); }
+  }
+  $('#url').value = url || '';
+  $('#notif').checked = !!lsGet(LS.notif);
+  renderChips();
+  render();
+  sync();
+  setInterval(sync, 5000);
+  setInterval(() => { $('#clock').textContent = new Date().toLocaleTimeString('es-CL'); }, 1000);
 }
 
-/* ---------- alertas ---------- */
+/* ---------- alertas y notificaciones ---------- */
 const fmt = (s,v) => (v == null || isNaN(v)) ? '—' : Number(v).toFixed(s.d);
 function sState(k, v){
   const th = S.umbrales[k];
@@ -392,7 +405,6 @@ function alerts(){
   return out.sort((a,b) => (a.level === 'critical' ? 0 : 1) - (b.level === 'critical' ? 0 : 1));
 }
 
-/* ---------- notificaciones (con la app abierta) ---------- */
 const seenCrit = new Set(); let firstAlertPass = true;
 async function notify(msg){
   if (!lsGet(LS.notif) || !('Notification' in window) || Notification.permission !== 'granted') return;
@@ -410,7 +422,7 @@ function checkNotify(al){
   if (S.fuente === 'vivo') firstAlertPass = false;
 }
 
-/* ---------- vistas ---------- */
+/* ---------- renders de vistas ---------- */
 const hhmmss = t => new Date(t).toLocaleTimeString('es-CL');
 const dt = t => new Date(t).toLocaleString('es-CL', {day:'2-digit', month:'2-digit', hour:'2-digit', minute:'2-digit'});
 let eqTab = 'inv', eqQ = '', eqEstado = '', view = 'resumen';
@@ -440,7 +452,7 @@ function renderResumen(al){
 
   $('#tiles').innerHTML = SENS.map(s => {
     const v = S.sensores[s.k], st = sState(s.k, v), th = S.umbrales[s.k];
-    return `<div class="tile ${st}"><div class="t">${s.ic} ${s.n}</div><div class="v num">${fmt(s,v)}<small> ${s.u}</small></div><div class="r">${th ? `Rango ${th.min} – ${th.max}` : 'Sin umbral'}</div></div>`;
+    return `<div class="tile ${st}"><div class="t">${s.ic} ${s.n}</div><div class="v num">${fmt(s,v)}<small> ${s.u}</small></div><div class="r">${th ? `Rango ${th.min} –${th.max}` : 'Sin umbral'}</div></div>`;
   }).join('');
 
   const cnt = (l,e) => l.filter(i => i.estado === e).length;
@@ -532,7 +544,7 @@ function renderContabilidad(){
   if (!c){
     $('#finKpis').innerHTML = '';
     $('#finFijos').innerHTML = $('#finVariables').innerHTML = $('#finNomina').innerHTML =
-      '<div class="empty">Sin registros contables todavía. Expórtalos desde el panel principal (Configuración → Exportar datos para la app móvil).</div>';
+      '<div class="empty">Sin registros contables todavía. Expórtalos desde el panel principal.</div>';
     $('#finProy').innerHTML = '';
     $('#finProyAnio').textContent = '';
     return;
@@ -554,7 +566,7 @@ function renderContabilidad(){
     : '<div class="empty">Sin trabajadores registrados.</div>';
 
   $('#finProyAnio').textContent = c.proyeccion && c.proyeccion.anio ? `· ${c.proyeccion.anio}` : '';
-  $('#finProy').innerHTML = `<div class="v num" style="font-size:22px;">${fmtCLP(t.proyeccionAnual)}</div><p class="muted" style="margin:4px 0 0;">Total proyectado para el año, según los parámetros definidos en el panel principal.</p>`;
+  $('#finProy').innerHTML = `<div class="v num" style="font-size:22px;">${fmtCLP(t.proyeccionAnual)}</div><p class="muted" style="margin:4px 0 0;">Total proyectado para el año.</p>`;
 }
 
 function render(){
@@ -563,66 +575,104 @@ function render(){
   checkNotify(al);
 }
 
-/* ---------- eventos de la interfaz (ninguno modifica datos de la planta) ---------- */
+/* ---------- eventos y navegación ---------- */
 $('#tabs').addEventListener('click', e => {
-  const b = e.target.closest('button'); if (!b) return;
-  view = b.dataset.v;
-  document.querySelectorAll('.tabs button').forEach(x => x.classList.toggle('on', x === b));
-  document.querySelectorAll('.view').forEach(v => v.classList.toggle('active', v.id === 'v-' + view));
-  scrollTo({top:0});
-});
-$('#eqSeg').addEventListener('click', e => {
-  const b = e.target.closest('button'); if (!b) return;
-  eqTab = b.dataset.t;
-  document.querySelectorAll('#eqSeg button').forEach(x => x.classList.toggle('on', x === b));
-  renderEquipos();
-});
-$('#eqQ').addEventListener('input', e => { eqQ = e.target.value; renderEquipos(); });
-$('#eqChips').addEventListener('click', e => {
-  const b = e.target.closest('button'); if (!b) return;
-  eqEstado = b.dataset.e; renderChips(); renderEquipos();
-});
-$('#btnRefresh').addEventListener('click', e => {
-  const b = e.currentTarget; b.classList.remove('spin'); void b.offsetWidth; b.classList.add('spin');
-  sync(true);
-});
-$('#btnSave').addEventListener('click', () => {
-  const u = $('#url').value.trim();
-  if (!u) return;
-  lsSet(LS.url, u); lsSet(LS.cache, null);
-  S = blank(); firstAlertPass = true; render(); sync(true);
-});
-$('#btnDemo').addEventListener('click', () => {
-  lsSet(LS.url, null); lsSet(LS.cache, null); $('#url').value = '';
-  S = demoData(); firstAlertPass = true; render();
-});
-$('#file').addEventListener('change', e => {
-  const f = e.target.files[0]; if (!f) return;
-  const rd = new FileReader();
-  rd.onload = () => {
-    try { S = blank(); apply(JSON.parse(rd.result), 'archivo'); firstAlertPass = true; }
-    catch(err) { alert('El archivo no es un JSON válido de Solponia.'); S = lsGet(LS.url) ? blank() : demoData(); }
-    render();
-  };
-  rd.readAsText(f);
-  e.target.value = '';
-});
-$('#notif').checked = !!lsGet(LS.notif) && 'Notification' in window && Notification.permission === 'granted';
-$('#notif').addEventListener('change', async e => {
-  if (!e.target.checked){ lsSet(LS.notif, null); return; }
-  if (!('Notification' in window)){ alert('Este navegador no admite notificaciones.'); e.target.checked = false; return; }
-  const p = await Notification.requestPermission();
-  if (p === 'granted') lsSet(LS.notif, '1'); else { e.target.checked = false; alert('Permiso de notificaciones denegado.'); }
+  const btn = e.target.closest('button');
+  if (!btn) return;
+  const v = btn.dataset.v;
+  if (!v) return;
+  view = v;
+  $$('.tabs button').forEach(b => b.classList.toggle('on', b === btn));$$
+('.view').forEach(sec => sec.classList.toggle('active', sec.id === 'v-' + v));
+  window.scrollTo(0,0);
 });
 
-/* ---------- arranque ---------- */
-$('#url').value = lsGet(LS.url) || '';
-setInterval(() => { $('#clock').textContent = new Date().toLocaleTimeString('es-CL'); }, 1000);
-boot(); renderChips(); render();
-sync();
-setInterval(sync, 5000);
-document.addEventListener('visibilitychange', () => { if (!document.hidden) sync(); });
-if ('serviceWorker' in navigator && location.protocol.startsWith('http')) navigator.serviceWorker.register('sw.js').catch(() => {});
+$('#btnRefresh').addEventListener('click', () => sync(true));
+
+$('#eqSeg').addEventListener('click', e => {   const btn = e.target.closest('button');   if (!btn) return;   eqTab = btn.dataset.t;   $$('#eqSeg button').forEach(b => b.classList.toggle('on', b === btn));
+  renderChips();
+  renderEquipos();
+});
+
+$('#eqChips').addEventListener('click', e => {   const btn = e.target.closest('button');   if (!btn) return;   eqEstado = btn.dataset.e;   $$('#eqChips button').forEach(b => b.classList.toggle('on', b === btn));
+  renderEquipos();
+});
+
+$('#eqQ').addEventListener('input', e => {
+  eqQ = e.target.value;
+  renderEquipos();
+});
+
+$('#btnSave').addEventListener('click', () => {
+  const u = $('#url').value.trim();
+  if (u){
+    lsSet(LS.url, u);
+    S.fuente = 'wait';
+    sync();
+  }
+});
+
+$('#btnDemo').addEventListener('click', () => {
+  lsSet(LS.url, null);
+  lsSet(LS.cache, null);
+  S = demoData();
+  $('#url').value = '';
+  render();
+});
+
+$('#file').addEventListener('change', e => {
+  const f = e.target.files[0];
+  if (!f) return;
+  const r = new FileReader();
+  r.onload = evt => {
+    try {
+      const j = JSON.parse(evt.target.result);
+      apply(j, 'archivo');
+      render();
+    } catch(err) { alert('Archivo JSON no válido'); }
+  };
+  r.readAsText(f);
+});
+
+$('#notif').addEventListener('change', e => {
+  const on = e.target.checked;
+  lsSet(LS.notif, on ? '1' : null);
+  if (on && 'Notification' in window && Notification.permission !== 'granted'){
+    Notification.requestPermission();
+  }
+});
+
+$('#btnForceUpdate').addEventListener('click', async () => {
+  if ('caches' in window) {
+    const names = await caches.keys();
+    await Promise.all(names.map(name => caches.delete(name)));
+  }
+  if ('serviceWorker' in navigator) {
+    const regs = await navigator.serviceWorker.getRegistrations();
+    for (let reg of regs) { await reg.unregister(); }
+  }
+  window.location.reload(true);
+});
+
+/* ---------- Registro dinámico de PWA Service Worker ---------- */
+if ('serviceWorker' in navigator) {
+  const swCode = `
+    const CACHE_NAME = 'solponia-v2';
+    self.addEventListener('install', e => { self.skipWaiting(); });
+    self.addEventListener('activate', e => { e.waitUntil(clients.claim()); });
+    self.addEventListener('fetch', e => {
+      if (e.request.method !== 'GET') return;
+      e.respondWith(
+        fetch(e.request).catch(() => caches.match(e.request))
+      );
+    });
+  `;
+  const blob = new Blob([swCode], {type: 'application/javascript'});
+  const swUrl = URL.createObjectURL(blob);
+  navigator.serviceWorker.register(swUrl).catch(() => {});
+}
+
+window.addEventListener('DOMContentLoaded', boot);
 })();
 </script>
 </body>
