@@ -131,12 +131,12 @@ label.l{ display:block; font-size:12px; font-weight:600; color:var(--tx2); margi
 .lock{ background:var(--ok-bg); color:var(--g800); border-radius:10px; padding:10px 12px; font-size:13px; }
 
 /* navegación inferior */
-.tabs{ position:fixed; left:0; right:0; bottom:0; max-width:600px; margin:0 auto; z-index:10; display:grid; grid-template-columns:repeat(5,1fr);
+.tabs{ position:fixed; left:0; right:0; bottom:0; max-width:600px; margin:0 auto; z-index:10; display:grid; grid-template-columns:repeat(6,1fr);
   background:#fff; border-top:1px solid var(--bd); padding-bottom:env(safe-area-inset-bottom); }
-.tabs button{ position:relative; border:0; background:none; padding:8px 0 7px; font-size:11px; color:var(--tx3); display:flex; flex-direction:column; align-items:center; gap:1px; }
-.tabs .ic{ font-size:21px; }
+.tabs button{ position:relative; border:0; background:none; padding:8px 0 7px; font-size:10px; color:var(--tx3); display:flex; flex-direction:column; align-items:center; gap:1px; }
+.tabs .ic{ font-size:18px; }
 .tabs button.on{ color:var(--g700); font-weight:700; }
-.badge{ position:absolute; top:3px; left:calc(50% + 6px); background:var(--crit); color:#fff; border-radius:10px; font-size:10px; font-weight:700; padding:0 5px; min-width:16px; }
+.badge{ position:absolute; top:3px; left:calc(50% + 10px); background:var(--crit); color:#fff; border-radius:10px; font-size:10px; font-weight:700; padding:0 5px; min-width:16px; }
 :focus-visible{ outline:3px solid #86efac; outline-offset:2px; }
 @media (prefers-reduced-motion:reduce){ .icon-btn.spin{ animation:none; } }
 </style>
@@ -145,7 +145,7 @@ label.l{ display:block; font-size:12px; font-weight:600; color:var(--tx2); margi
 <div class="app">
   <header class="hd">
     <div class="hd-row">
-      <div class="brand"><span class="mark">☀️</span><div><b>SOLPONIA</b><small>Sistema de Monitoreo·</small></div></div>
+      <div class="brand"><span class="mark">☀️</span><div><b>SOLPONIA</b><small>Desierto Sustentable</small></div></div>
       <button class="icon-btn" id="btnRefresh" aria-label="Actualizar datos">↻</button>
     </div>
     <div class="hd-row sub"><span class="conn wait" id="conn"><i></i><span>Conectando…</span></span><span id="clock" class="num"></span></div>
@@ -156,7 +156,7 @@ label.l{ display:block; font-size:12px; font-weight:600; color:var(--tx2); margi
       <div id="hero"></div>
       <h3 class="sec">Sensores en vivo</h3>
       <div class="grid2" id="tiles"></div>
-      <h3 class="sec">Estado de la planta</h3>
+      <h3 class="sec">Estado del invernadero</h3>
       <div class="grid2" id="kpis"></div>
       <h3 class="sec">Últimos eventos</h3>
       <div class="list" id="evPrev"></div>
@@ -175,6 +175,18 @@ label.l{ display:block; font-size:12px; font-weight:600; color:var(--tx2); margi
       <div id="eqList"></div>
     </section>
 
+    <section class="view" id="v-contabilidad">
+      <div class="grid2" id="finKpis"></div>
+      <h3 class="sec">Costos Fijos</h3>
+      <div class="list" id="finFijos"></div>
+      <h3 class="sec">Costos Variables</h3>
+      <div class="list" id="finVariables"></div>
+      <h3 class="sec">Remuneraciones</h3>
+      <div class="list" id="finNomina"></div>
+      <h3 class="sec">Proyección Anual <span id="finProyAnio" class="muted"></span></h3>
+      <div class="card" id="finProy"></div>
+    </section>
+
     <section class="view" id="v-alertas">
       <h3 class="sec">Alertas activas</h3>
       <div class="list" id="alList"></div>
@@ -184,8 +196,6 @@ label.l{ display:block; font-size:12px; font-weight:600; color:var(--tx2); margi
 
     <section class="view" id="v-ajustes">
       <div class="card">
-        <h3>Modo de la app</h3>
-        <div class="lock">🔒 Solo lectura.</div>
       </div>
       <div class="card">
         <h3>Origen de los datos</h3>
@@ -210,6 +220,7 @@ label.l{ display:block; font-size:12px; font-weight:600; color:var(--tx2); margi
     <button data-v="resumen" class="on"><span class="ic">🌱</span>Resumen</button>
     <button data-v="sensores"><span class="ic">📈</span>Sensores</button>
     <button data-v="equipos"><span class="ic">🏬</span>Equipos</button>
+    <button data-v="contabilidad"><span class="ic">💰</span>contabilidad</button>
     <button data-v="alertas"><span class="ic">🔔</span>Alertas<span class="badge" id="badge" hidden></span></button>
     <button data-v="ajustes"><span class="ic">⚙️</span>Ajustes</button>
   </nav>
@@ -221,6 +232,7 @@ label.l{ display:block; font-size:12px; font-weight:600; color:var(--tx2); margi
 const $ = s => document.querySelector(s);
 const esc = v => String(v ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const clamp = (v,a,b) => Math.min(b, Math.max(a, v));
+const fmtCLP = n => '$' + Math.round(n||0).toLocaleString('es-CL');
 
 const SENS = [
   {k:'ph',      n:'pH solución',        u:'',      d:2, ic:'🧪'},
@@ -243,7 +255,7 @@ const lsSet = (k,v) => { try { v == null ? localStorage.removeItem(k) : localSto
 
 /* ---------- estado ---------- */
 const blank = () => ({fuente:'wait', ult:null, generado:null, sensores:{}, lecturas:[], umbrales:DEF_UMB,
-                      camionetas:[], maquinaria:[], repuestos:[], eventos:[]});
+                      camionetas:[], maquinaria:[], repuestos:[], eventos:[], contabilidad:null});
 function demoData(){
   const t = Date.now();
   const st = blank();
@@ -265,6 +277,23 @@ function demoData(){
     {codigo:'SEN-003', nombre:'Sensor Medidor de pH IoT', stock:4, stockmin:2, ubicacion:'Taller Electrónico'},
   ];
   st.eventos = [{level:'info', message:'Modo demo: datos simulados, sin conexión a la planta', time:t}];
+  st.contabilidad = {
+    totales:{ costosFijos:545000, costosVariables:270000, nomina:1450000, mantenciones:65000, operacional:2330000, proyeccionAnual:27960000 },
+    costosFijos:[
+      {concepto:'Arriendo terreno e invernaderos', categoria:'Arriendo', monto:450000, iva:false},
+      {concepto:'Plan de internet y monitoreo IoT', categoria:'Servicios Básicos', monto:35000, iva:true},
+      {concepto:'Seguro de instalaciones', categoria:'Seguros', monto:60000, iva:false},
+    ],
+    costosVariables:[
+      {concepto:'Solución nutritiva (compra mensual)', categoria:'Insumos/Nutrientes', monto:180000, iva:true},
+      {concepto:'Transporte y despacho a clientes', categoria:'Logística/Fletes', monto:90000, iva:true},
+    ],
+    empleados:[
+      {nombre:'Juan Pérez', cargo:'Técnico Hidropónico', contrato:'indefinido', sueldoBruto:650000, liquido:565000, costoEmpresa:715000},
+      {nombre:'María Soto', cargo:'Encargada Comercial', contrato:'plazoFijo', sueldoBruto:750000, liquido:640000, costoEmpresa:800000},
+    ],
+    proyeccion:{ anio: new Date().getFullYear()+1 },
+  };
   for (let i = 0; i < 40; i++){ simStep(st); pushSample(st, t - (40-i)*3000); }
   return st;
 }
@@ -300,6 +329,7 @@ function apply(j, fuente){
   else if (any) pushSample(S);
   if (j.umbrales) S.umbrales = Object.assign({}, DEF_UMB, j.umbrales);
   ['camionetas','maquinaria','repuestos','eventos'].forEach(k => { if (Array.isArray(j[k])) S[k] = j[k]; });
+  if (j.contabilidad) S.contabilidad = j.contabilidad;
   S.generado = j.generado || null;
   S.fuente = fuente; S.ult = Date.now();
 }
@@ -497,9 +527,39 @@ function renderAjustes(){
   $('#srcInfo').textContent = info;
 }
 
+function renderContabilidad(){
+  const c = S.contabilidad;
+  if (!c){
+    $('#finKpis').innerHTML = '';
+    $('#finFijos').innerHTML = $('#finVariables').innerHTML = $('#finNomina').innerHTML =
+      '<div class="empty">Sin registros contables todavía. Expórtalos desde el panel principal (Configuración → Exportar datos para la app móvil).</div>';
+    $('#finProy').innerHTML = '';
+    $('#finProyAnio').textContent = '';
+    return;
+  }
+  const t = c.totales || {};
+  $('#finKpis').innerHTML = [
+    ['Costos Fijos', t.costosFijos], ['Costos Variables', t.costosVariables],
+    ['Costo Nómina', t.nomina], ['Costo Operacional Total', t.operacional],
+  ].map(k => `<div class="kpi"><div class="t">${k[0]}</div><div class="v num">${fmtCLP(k[1])}</div></div>`).join('');
+
+  const listaCostos = arr => (arr && arr.length)
+    ? arr.map(c => `<div class="li"><span>${esc(c.concepto)}${c.categoria ? `<time>${esc(c.categoria)}</time>` : ''}</span><b class="num" style="margin-left:auto;">${fmtCLP(c.monto)}</b></div>`).join('')
+    : '<div class="empty">Sin registros.</div>';
+  $('#finFijos').innerHTML = listaCostos(c.costosFijos);
+  $('#finVariables').innerHTML = listaCostos(c.costosVariables);
+
+  $('#finNomina').innerHTML = (c.empleados && c.empleados.length)
+    ? c.empleados.map(e => `<div class="li"><span>${esc(e.nombre)}<time>${esc(e.cargo || '')}</time></span><b class="num" style="margin-left:auto;">${fmtCLP(e.liquido)}</b></div>`).join('')
+    : '<div class="empty">Sin trabajadores registrados.</div>';
+
+  $('#finProyAnio').textContent = c.proyeccion && c.proyeccion.anio ? `· ${c.proyeccion.anio}` : '';
+  $('#finProy').innerHTML = `<div class="v num" style="font-size:22px;">${fmtCLP(t.proyeccionAnual)}</div><p class="muted" style="margin:4px 0 0;">Total proyectado para el año, según los parámetros definidos en el panel principal.</p>`;
+}
+
 function render(){
   const al = alerts();
-  renderConn(); renderResumen(al); renderSensores(); renderEquipos(); renderAlertas(al); renderAjustes();
+  renderConn(); renderResumen(al); renderSensores(); renderEquipos(); renderContabilidad(); renderAlertas(al); renderAjustes();
   checkNotify(al);
 }
 
